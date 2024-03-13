@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useState } from 'react';
 
 import {
   MDBBtn,
@@ -14,6 +16,24 @@ import {
 from 'mdb-react-ui-kit';
 
 function Signup() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/signup', {
+        name,
+        email,
+        password,
+      });
+      console.log(response.data); // handle response from server
+      alert('Signup Successful')
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
   return (
     <MDBContainer fluid>
 
@@ -26,11 +46,11 @@ function Signup() {
               <h2 className="fw-bold mb-2 text-uppercase">Signup</h2>
               <p className="text-white-50 mb-5">Please enter your details</p>
 
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Name' id='formControlLg' type='text' size="lg"/>
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='email' size="lg"/>
-              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg"/>
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Name' id='formControlLg' type='text' size="lg" onChange={(e)=>setName(e.target.value)} value={name}/>
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Email address' id='formControlLg' type='email' size="lg" onChange={(e)=>setEmail(e.target.value)} value={email}/>
+              <MDBInput wrapperClass='mb-4 mx-5 w-100' labelClass='text-white' label='Password' id='formControlLg' type='password' size="lg" onChange={(e)=>setPassword(e.target.value)} value={password}/>
 
-              <MDBBtn outline className='mx-2 px-5 mt-3' color='white' size='lg'>
+              <MDBBtn outline className='mx-2 px-5 mt-3' color='white' size='lg' onClick={handleSubmit}>
                 Signup
               </MDBBtn>
 
